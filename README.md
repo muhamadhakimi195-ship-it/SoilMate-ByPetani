@@ -68,8 +68,8 @@ Photo credits and license details are in `dashboard/static/state-hero/CREDITS.md
 and the weather templates. Simulation images are AI-generated illustrations.
 The Kelantan tourism photo has no explicit reuse license on its source page;
 resolve permission or replace it before distributing those assets publicly.
-No repository-wide license has been selected; third-party assets retain their
-individual terms.
+Project code is covered by the [MIT license](LICENSE). Third-party assets retain
+their individual license terms and are not relicensed by the project's MIT license.
 
 ## First upload to GitHub
 
