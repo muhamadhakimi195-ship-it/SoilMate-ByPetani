@@ -1,3 +1,0 @@
-# Optional offline image optimization; not needed to run the dashboard.
-Pillow==13.0.0
-numpy==2.5.4

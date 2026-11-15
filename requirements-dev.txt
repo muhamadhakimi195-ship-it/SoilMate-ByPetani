@@ -1,4 +1,0 @@
--r requirements.txt
-
-# FastAPI TestClient used by the existing unittest suite.
-httpx==0.28.1

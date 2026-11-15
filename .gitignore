@@ -52,3 +52,13 @@ Desktop.ini
 /data/processed/data_processed.csv
 /data/raw/
 /data/interim/
+
+# Private documents and offline development files: never publish.
+/docs/
+/tools/
+/tests/
+/requirements-dev.txt
+/requirements-tools.txt
+# Keep only the root README as Markdown in this repository.
+*.[mM][dD]
+!/README.md
