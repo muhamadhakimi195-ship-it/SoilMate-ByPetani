@@ -1,0 +1,29 @@
+{# Calendar card adapted from Uiverse.io by dexter-st. #}
+{% set shown_date = period_end if active_page == 'analysis' else date_label %}
+<details class="date-control filter-card" id="date-control">
+  <summary aria-label="Choose observation date. Selected {{ shown_date }} for {{ selected_state }}.">
+    <span class="calendar-year filter-notch">{{ selected_date[:4] }}</span>
+    <span class="calendar-month">Date
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
+    </span>
+    <span class="calendar-selected"><span class="calendar-day">{{ selected_date[-2:]|int }}</span><span class="calendar-date-month">{{ shown_date.split()[1] }}</span></span>
+    <span class="calendar-range">{% if active_page == 'analysis' %}<span>{{ period_start }}</span><span>– {{ period_end }}</span>{% else %}<span>Observation date</span>{% endif %}</span>
+  </summary>
+  <div class="calendar-panel">
+    <div class="calendar-navigation">
+      <button type="button" data-month="-1" aria-label="Previous month" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg>
+      </button>
+      <span id="calendar-month-title" aria-live="polite">{{ shown_date.split()[1] }} {{ selected_date[:4] }}</span>
+      <button type="button" data-month="1" aria-label="Next month" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg>
+      </button>
+    </div>
+    <div class="calendar-weekdays" aria-hidden="true"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+    <div class="calendar-days" role="group" aria-labelledby="calendar-month-title"></div>
+    <div class="calendar-entry">
+      <label for="map-date">Choose date</label>
+      <input type="date" id="map-date" name="date" form="dashboard-filters" value="{{ selected_date }}" min="{{ min_date }}" max="{{ max_date }}" required>
+    </div>
+  </div>
+</details>

@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block content %}
+      <div class="dashboard">
+        <section id="agriculture-risk" aria-label="Overall agriculture risk">
+          {% include "agriculture_risk.html" %}
+        </section>
+        <section class="dashboard-row dashboard-row-five" aria-label="First row">
+          <div id="weather-card" class="card dashboard-card weather-card" aria-label="Weather condition">
+            {% include "weather_card.html" %}
+          </div>
+          <div class="card dashboard-card simulation-card">
+            <div class="simulation-header">
+              <span class="card-title">Crop &amp; soil simulation</span>
+              <button id="simulation-motion" class="simulation-motion" type="button" aria-pressed="true">Pause motion</button>
+              <div class="simulation-weeks segmented-switch" role="group" aria-label="Simulation week" style="--segments: 4; --selected: 3;">
+                <button type="button" data-weeks="3" aria-pressed="false">3 weeks ago</button>
+                <button type="button" data-weeks="2" aria-pressed="false">2 weeks ago</button>
+                <button type="button" data-weeks="1" aria-pressed="false">1 week ago</button>
+                <button type="button" data-weeks="0" aria-pressed="true">Selected date</button>
+                <div class="slider" aria-hidden="true"></div>
+              </div>
+            </div>
+            <div id="simulation-content" aria-label="Crop simulation" aria-live="polite">
+              {% include "simulation.html" %}
+            </div>
+          </div>
+         
+        </section>
+
+        <section class="dashboard-row dashboard-row-split" aria-label="Second row">
+
+          <div class="card dashboard-card map-card">
+            <span class="card-title">Malaysia risk map</span>
+            <fieldset class="map-switch segmented-switch">
+              <legend class="visually-hidden">Choose map</legend>
+
+              <input type="radio" id="alert-map" name="map"
+                    value="/maps/alert" checked>
+              <label for="alert-map">Overall alert</label>
+
+              <input type="radio" id="rain-map" name="map"
+                    value="/maps/rain">
+              <label for="rain-map">Rainfall</label>
+
+              <input type="radio" id="humid-map" name="map"
+                    value="/maps/humid">
+              <label for="humid-map">Air dryness</label>
+
+              <input type="radio" id="soil-map" name="map"
+                    value="/maps/soil">
+              <label for="soil-map">Soil moisture</label>
+
+              <input type="radio" id="plants-map" name="map"
+                    value="/maps/plants">
+              <label for="plants-map">Plant stress</label>
+              <div class="slider" aria-hidden="true"></div>
+            </fieldset>
+
+            <div class="map-wrapper" role="group" aria-label="Malaysia risk map" aria-busy="true">
+              <iframe
+                id="malaysia-map"
+                title="Malaysia agricultural risk map"
+                src="/maps/alert?date={{ selected_date }}"
+                width="100%"
+                height="100%"
+                style="border: 0;"
+                loading="lazy"
+                allowfullscreen>
+              </iframe>
+
+              <div id="alert-legend" class="map-legend" data-map="alert-map" role="group" aria-label="Alert levels">
+                <span>Alert level</span>
+                <div><span class="legend-color" style="background: #27966B;" aria-hidden="true"></span> Normal</div>
+                <div><span class="legend-color" style="background: #E8C547;" aria-hidden="true"></span> Watch</div>
+                <div><span class="legend-color" style="background: #E98B36;" aria-hidden="true"></span> Warning</div>
+                <div><span class="legend-color" style="background: #D94B4B;" aria-hidden="true"></span> Flash drought</div>
+              </div>
+
+              <div id="rain-legend" class="map-legend" data-map="rain-map" role="group" aria-label="Rain levels" hidden>
+                <span>Rain</span>
+                <div><span class="legend-color" style="background: #27966B;" aria-hidden="true"></span> Normal</div>
+                <div><span class="legend-color" style="background: #E8C547;" aria-hidden="true"></span> Getting dry</div>
+                <div><span class="legend-color" style="background: #D94B4B;" aria-hidden="true"></span> Very dry</div>
+              </div>
+
+              <div id="humid-legend" class="map-legend" data-map="humid-map" role="group" aria-label="Air humidity levels" hidden>
+                <span>Air humidity</span>
+                <div><span class="legend-color" style="background: #27966B;" aria-hidden="true"></span> Normal</div>
+                <div><span class="legend-color" style="background: #E8C547;" aria-hidden="true"></span> Getting dry</div>
+                <div><span class="legend-color" style="background: #D94B4B;" aria-hidden="true"></span> Very dry</div>
+              </div>
+
+              <div id="soil-legend" class="map-legend" data-map="soil-map" role="group" aria-label="Soil moisture levels" hidden>
+                <span>Soil moisture</span>
+                <div><span class="legend-color" style="background: #27966B;" aria-hidden="true"></span> Normal</div>
+                <div><span class="legend-color" style="background: #E8C547;" aria-hidden="true"></span> Getting dry</div>
+                <div><span class="legend-color" style="background: #D94B4B;" aria-hidden="true"></span> Very dry</div>
+              </div>
+
+              <div id="plants-legend" class="map-legend" data-map="plants-map" role="group" aria-label="Plant condition levels" hidden>
+                <span>Plant stress</span>
+                <div><span class="legend-color" style="background: #27966B;" aria-hidden="true"></span> Normal</div>
+                <div><span class="legend-color" style="background: #E8C547;" aria-hidden="true"></span> Getting dry</div>
+                <div><span class="legend-color" style="background: #D94B4B;" aria-hidden="true"></span> Very dry</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card dashboard-card risk-card">
+
+            <span class="card-title">Risk by layer</span>
+            <div id="risk-layers" class="risk-layers" aria-label="Layer assessment">
+              {% include "risk_layers.html" %}
+            </div>
+          </div>
+        </section>
+      </div>
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', path='dashboard.js') }}?v=4" defer></script>
+{% endblock %}

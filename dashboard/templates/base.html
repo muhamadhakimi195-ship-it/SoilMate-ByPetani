@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.9/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}?v=header-half-16">
+    <link rel="stylesheet" href="{{ url_for('static', path='date_controls.css') }}?v=3">
+    {% block head %}{% endblock %}
+    <title>SoilMate · {{ 'Overview' if active_page == 'overview' else 'Monitoring & Analysis' }}</title>
+  </head>
+  <body>
+    <header class="px-4 py-2 border-bottom">
+      <a href="{{ url_for('home') }}?date={{ selected_date }}&amp;state={{ selected_state|urlencode }}" class="logo text-decoration-none">SoilMate</a>
+    </header>
+    <main class="container" aria-label="{{ 'Overview' if active_page == 'overview' else 'Monitoring and analysis' }}">
+      <span id="app-status" class="visually-hidden" role="status" aria-live="polite"></span>
+      {% include "page_controls.html" %}
+      <div class="page-heading">
+        {% block page_title %}<h1>Agriculture overview</h1>{% endblock %}
+        {% include "page_navigation.html" %}
+      </div>
+      {% block content %}{% endblock %}
+    </main>
+    <footer><div class="container">SoilMate · Agriculture monitoring</div></footer>
+    <script src="{{ url_for('static', path='date_controls.js') }}?v=1" defer></script>
+    <script src="{{ url_for('static', path='controls.js') }}?v=4" defer></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

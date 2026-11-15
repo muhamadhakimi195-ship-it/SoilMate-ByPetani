@@ -1,0 +1,366 @@
+{
+  "johor": {
+    "variants": [
+      {
+        "file": "johor-hd-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "johor-hd-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "johor-hd-3840.webp",
+        "width": 3840
+      }
+    ],
+    "source": "https://commons.wikimedia.org/wiki/File:Istana_Bukit_Serene_-_The_Royal_Crown_(night,_2015).jpg",
+    "author": "Aimanabdulharis",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "original_width": 8869,
+    "original_height": 4484,
+    "position": "center 24%"
+  },
+  "kedah": {
+    "variants": [
+      {
+        "file": "kedah-zahir-hd-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "kedah-zahir-hd-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "kedah-zahir-hd-3840.webp",
+        "width": 3840
+      }
+    ],
+    "source": "https://commons.wikimedia.org/wiki/File:MasjidZahir.jpg",
+    "author": "MosheA",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "original_width": 4032,
+    "original_height": 3024,
+    "position": "center 30%"
+  },
+  "kelantan": {
+    "variants": [
+      {
+        "file": "kelantan-pcb-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "kelantan-pcb-1677.webp",
+        "width": 1677
+      }
+    ],
+    "source": "https://tourism.kelantan.my/index.php/pelancongan/alam-semulajadi/pantai-tasik/pantai-cahaya-bulan",
+    "author": "Tourism Kelantan",
+    "license": "See source",
+    "license_url": "https://tourism.kelantan.my/index.php/pelancongan/alam-semulajadi/pantai-tasik/pantai-cahaya-bulan",
+    "position": "center 50%",
+    "original_width": 1677,
+    "original_height": 1118
+  },
+  "kuala-lumpur": {
+    "variants": [
+      {
+        "file": "kuala-lumpur-hd-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "kuala-lumpur-hd-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "kuala-lumpur-hd-3840.webp",
+        "width": 3840
+      }
+    ],
+    "source": "https://commons.wikimedia.org/wiki/File:Kuala_Lumpur_Malaysia_Sultan-Abdul-Samad-Building-05.jpg",
+    "author": "CEphoto, Uwe Aranas",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+    "original_width": 5391,
+    "original_height": 3563,
+    "position": "center 48%"
+  },
+  "labuan": {
+    "variants": [
+      {
+        "file": "labuan-annur-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "labuan-annur-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "labuan-annur-3534.webp",
+        "width": 3534
+      }
+    ],
+    "source": "https://commons.wikimedia.org/wiki/File:Masjid_Jamek_Annur,_2021.jpg",
+    "author": "Aidlfarhn",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "position": "center 53%",
+    "original_width": 3534,
+    "original_height": 2651
+  },
+  "malacca": {
+    "variants": [
+      {
+        "file": "malacca-hd-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "malacca-hd-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "malacca-hd-3840.webp",
+        "width": 3840
+      }
+    ],
+    "source": "https://commons.wikimedia.org/wiki/File:A_Famosa_Portugese_fort_in_Malacca_with_a_canon.jpg",
+    "author": "Irwan Shah Bin Abdullah / https://ehalal.io/muslim-friendly-travel-2024/Malacca",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "original_width": 4272,
+    "original_height": 2848,
+    "position": "center 70%"
+  },
+  "negeri-sembilan": {
+    "variants": [
+      {
+        "file": "negeri-sembilan-hd-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "negeri-sembilan-hd-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "negeri-sembilan-hd-3264.webp",
+        "width": 3264
+      }
+    ],
+    "source": "https://commons.wikimedia.org/wiki/File:Istana_Seri_Menanti_(30042023)_32.jpg",
+    "author": "Zahirulnukman",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0",
+    "original_width": 3264,
+    "original_height": 2448,
+    "position": "center 15%"
+  },
+  "pahang": {
+    "variants": [
+      {
+        "file": "pahang-hd-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "pahang-hd-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "pahang-hd-3840.webp",
+        "width": 3840
+      }
+    ],
+    "source": "https://commons.wikimedia.org/wiki/File:Kuantan_skyline,_August_2025.jpg",
+    "author": "PenangLion",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "original_width": 6000,
+    "original_height": 4000,
+    "position": "center 58%"
+  },
+  "penang": {
+    "variants": [
+      {
+        "file": "penang-hd-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "penang-hd-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "penang-hd-3840.webp",
+        "width": 3840
+      }
+    ],
+    "source": "https://commons.wikimedia.org/wiki/File:Penang_Bridge_20250222.jpg",
+    "author": "DvTor8303",
+    "license": "CC0",
+    "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "original_width": 4484,
+    "original_height": 2048,
+    "position": "center 48%"
+  },
+  "perak": {
+    "variants": [
+      {
+        "file": "perak-hd-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "perak-hd-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "perak-hd-3024.webp",
+        "width": 3024
+      }
+    ],
+    "source": "https://www.pexels.com/photo/old-brick-castle-on-hill-against-cloudy-storm-sky-14727506/",
+    "author": "cahaya tuah",
+    "license": "Pexels License",
+    "license_url": "https://www.pexels.com/license/",
+    "original_width": 3024,
+    "original_height": 4032,
+    "position": "center 43%"
+  },
+  "perlis": {
+    "variants": [
+      {
+        "file": "perlis-hd-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "perlis-hd-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "perlis-hd-3840.webp",
+        "width": 3840
+      }
+    ],
+    "source": "https://commons.wikimedia.org/wiki/File:Sunset_at_Al-Hussain_Floating_Mosque.jpg",
+    "author": "DanialNajmi",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "original_width": 5477,
+    "original_height": 3651,
+    "position": "center 70%"
+  },
+  "putrajaya": {
+    "variants": [
+      {
+        "file": "putrajaya-hd-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "putrajaya-hd-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "putrajaya-hd-3840.webp",
+        "width": 3840
+      }
+    ],
+    "source": "https://www.pexels.com/photo/putra-mosque-27797400/",
+    "author": "Scruffy",
+    "license": "Pexels License",
+    "license_url": "https://www.pexels.com/license/",
+    "original_width": 8058,
+    "original_height": 4533,
+    "position": "center 48%"
+  },
+  "sabah": {
+    "variants": [
+      {
+        "file": "sabah-hd-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "sabah-hd-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "sabah-hd-3840.webp",
+        "width": 3840
+      }
+    ],
+    "source": "https://www.pexels.com/photo/trees-and-mountains-behind-15874776/",
+    "author": "Ihsan Adityawarman",
+    "license": "Pexels License",
+    "license_url": "https://www.pexels.com/license/",
+    "original_width": 5472,
+    "original_height": 3648,
+    "position": "center 60%"
+  },
+  "sarawak": {
+    "variants": [
+      {
+        "file": "sarawak-hd-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "sarawak-hd-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "sarawak-hd-2930.webp",
+        "width": 2930
+      }
+    ],
+    "source": "https://www.pexels.com/photo/state-legislative-assembly-building-in-kuching-34862419/",
+    "author": "Muhammad Uthman Muhammed Suhaimi",
+    "license": "Pexels License",
+    "license_url": "https://www.pexels.com/license/",
+    "original_width": 2930,
+    "original_height": 3906,
+    "position": "center 75%"
+  },
+  "selangor": {
+    "variants": [
+      {
+        "file": "selangor-hd-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "selangor-hd-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "selangor-hd-3840.webp",
+        "width": 3840
+      }
+    ],
+    "source": "https://www.pexels.com/photo/magnificent-blue-mosque-dome-and-minarets-in-daylight-39946482/",
+    "author": "Muyu yao",
+    "license": "Pexels License",
+    "license_url": "https://www.pexels.com/license/",
+    "original_width": 5472,
+    "original_height": 3648,
+    "position": "center 48%"
+  },
+  "terengganu": {
+    "variants": [
+      {
+        "file": "terengganu-hd-1280.webp",
+        "width": 1280
+      },
+      {
+        "file": "terengganu-hd-1920.webp",
+        "width": 1920
+      },
+      {
+        "file": "terengganu-hd-3840.webp",
+        "width": 3840
+      }
+    ],
+    "source": "https://www.pexels.com/photo/an-aerial-photography-of-terengganu-drawbridge-4467146/",
+    "author": "Faizal Ortho",
+    "license": "Pexels License",
+    "license_url": "https://www.pexels.com/license/",
+    "original_width": 3992,
+    "original_height": 2242,
+    "position": "center 42%"
+  }
+}

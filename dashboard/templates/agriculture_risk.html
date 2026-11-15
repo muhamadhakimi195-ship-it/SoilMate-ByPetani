@@ -1,0 +1,62 @@
+{# Icons imported from Lucide 0.468.0; license in static/icons/lucide. #}
+{% from "optimized_images.html" import hero_source with context %}
+{% macro icon(name) -%}
+<span class="agri-icon" style="--icon: url('{{ url_for('static', path='icons/lucide/' ~ name ~ '.svg') }}')" aria-hidden="true"></span>
+{%- endmacro %}
+{% set risk = agriculture_risk %}
+{% set hero_names = {'Johor': 'johor', 'Kedah': 'kedah', 'Kelantan': 'kelantan', 'Kuala Lumpur': 'kuala-lumpur', 'Labuan': 'labuan', 'Melaka': 'malacca', 'Negeri Sembilan': 'negeri-sembilan', 'Pahang': 'pahang', 'Pulau Pinang': 'penang', 'Perak': 'perak', 'Perlis': 'perlis', 'Putrajaya': 'putrajaya', 'Sabah': 'sabah', 'Sarawak': 'sarawak', 'Selangor': 'selangor', 'Terengganu': 'terengganu'} %}
+<article class="agri-card" data-alert="{{ risk['Alert_level'] if risk else 'none' }}" aria-labelledby="agri-risk-title">
+  {% set hero = get_state_hero(hero_names.get(selected_state, '')) %}
+  {% if hero %}
+  <picture>
+  {{ hero_source(hero) }}
+  <img class="agri-backdrop" src="{{ url_for('static', path='state-hero/' ~ hero.variants[1].file) }}"
+       srcset="{% for variant in hero.variants %}{{ url_for('static', path='state-hero/' ~ variant.file) }} {{ variant.width }}w{% if not loop.last %}, {% endif %}{% endfor %}"
+       sizes="(max-width: 760px) 1000px, calc(100vw - 48px)"
+       style="object-position: {{ hero.position }}" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
+  </picture>
+  {% endif %}
+  <div class="agri-heading">
+    <p class="agri-label">Overall agriculture risk</p>
+    <p class="agri-context">{{ selected_state }} <span aria-hidden="true">·</span> <time datetime="{{ selected_date }}">{{ risk.date_label if risk else selected_date }}</time></p>
+  </div>
+  {% if risk %}
+  <div class="agri-body">
+    <div class="agri-summary agri-glass">
+      <div class="agri-title-row">
+        <span class="agri-symbol">{{ icon(risk.icon) }}</span>
+        <div>
+          <h2 id="agri-risk-title">{{ risk['Alert_name'] }}</h2>
+          <span class="agri-level"><span class="agri-status-dot" aria-hidden="true"></span>Alert level {{ risk['Alert_level'] }} / 3</span>
+        </div>
+      </div>
+      <p class="agri-advice">{{ risk['Advice'] }}</p>
+      <p class="agri-trend" data-trend="{{ risk['Trend arrow'] }}">{{ icon(risk.trend_icon) }}<span>{{ risk['Trend'] }}</span></p>
+    </div>
+    <aside class="agri-plant agri-glass" aria-labelledby="agri-plant-title">
+      <div class="agri-plant-heading">
+        <h3 id="agri-plant-title">{{ icon('sprout') }}Good time to plant?</h3>
+        <span class="agri-decision" data-pass="{{ risk['Plant now?'] }}">{{ risk['Plant now?'] or 'Unknown' }}</span>
+      </div>
+      <ul class="agri-checks">
+        {% for key in ['soil', 'rain', 'warn'] %}
+        {% set passed = risk[key ~ '_pass'] %}
+        <li data-pass="{{ passed }}">
+          {{ icon('check' if passed == 'Yes' else 'x' if passed == 'No' else 'circle-help') }}
+          <span>{{ risk[key ~ '_check'] }}{% if passed not in ['Yes', 'No'] %}<small>Check result unavailable</small>{% endif %}</span>
+          <span class="visually-hidden">{{ 'Passed' if passed == 'Yes' else 'Not passed' if passed == 'No' else 'Unknown' }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </aside>
+  </div>
+  {% else %}
+  <div class="agri-summary agri-glass agri-empty">
+  <h2 id="agri-risk-title">No risk assessment available</h2>
+  <p class="agri-advice">Choose another date or state to view the assessment.</p>
+  </div>
+  {% endif %}
+  {% if hero %}
+  <p class="agri-photo-credit"><span>Photo: <a href="{{ hero.source }}" target="_blank" rel="noopener noreferrer">{{ hero.author }}</a> · <a href="{{ hero.license_url }}" target="_blank" rel="noopener noreferrer">{{ hero.license }}</a> · Cropped to fit</span></p>
+  {% endif %}
+</article>

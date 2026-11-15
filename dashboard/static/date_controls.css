@@ -1,0 +1,60 @@
+/* State and date share one compact control shell; native select stays keyboard/touch friendly. */
+.filter-card { position: relative; min-width: 0; height: var(--filter-height, 112px); border: 2px solid var(--accent); border-radius: var(--radius-card); background: var(--surface); transition: background-color 160ms, box-shadow 160ms; }
+.filter-card:hover { background: #F5FAF8; }
+.filter-card:focus-within { box-shadow: 0 0 0 3px rgba(15,107,120,0.15); }
+.filter-card .filter-notch { position: absolute; top: 0; right: 0; padding: 3px 8px; border-radius: 0 7px 0 6px; background: var(--accent); color: var(--surface); font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.state-control { display: grid; grid-template-rows: 20px 1fr 28px; padding: 10px 12px; }
+.state-control .state-flag { position: absolute; top: 6px; right: 10px; width: 40px; height: 28px; object-fit: contain; }
+.state-control label { display: flex; align-items: center; gap: 4px; margin: 0; font-size: 13px; font-weight: 500; cursor: pointer; }
+.state-control label svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.state-control select { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; opacity: 0; font-size: 16px; cursor: pointer; }
+.state-control .state-selected { align-self: center; font-size: 22px; font-weight: 500; line-height: 1.1; letter-spacing: -0.025em; overflow-wrap: break-word; }
+.state-control option { background: var(--surface); color: var(--ink); font-size: 16px; }
+.state-control .filter-caption { align-self: end; font-size: 11px; }
+
+/* Calendar card adapted from Uiverse.io by dexter-st; colors follow SoilMate. */
+.date-control summary { display: grid; grid-template-rows: 20px 1fr 28px; height: 100%; position: relative; padding: 10px 12px; list-style: none; cursor: pointer; }
+.date-control summary::-webkit-details-marker { display: none; }
+.date-control .calendar-month { display: flex; align-items: center; gap: 4px; margin-right: 36px; font-size: 0.8125rem; font-weight: 500; }
+.date-control svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.date-control .calendar-month svg { width: 12px; height: 12px; flex-shrink: 0; transition: transform 160ms; }
+.date-control[open] .calendar-month svg { transform: rotate(180deg); }
+.date-control .calendar-selected { display: flex; align-items: baseline; align-self: center; gap: 6px; }
+.date-control .calendar-day { font-size: clamp(1.75rem, 2.5vw, 2rem); font-weight: 500; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.date-control .calendar-date-month { font-size: 22px; font-weight: 500; letter-spacing: -0.025em; }
+.date-control .calendar-range { display: flex; flex-wrap: wrap; align-content: end; gap: 0 4px; font-size: 11px; line-height: 1.25; font-variant-numeric: tabular-nums; }
+.date-control .calendar-range > span { white-space: nowrap; }
+.date-control .calendar-panel { position: absolute; top: calc(100% + 8px); left: -2px; z-index: 10; width: 300px; max-width: calc(100vw - 48px); padding: 12px; border: 2px solid var(--accent); border-radius: var(--radius-card); background: var(--surface); box-shadow: 0 8px 20px rgba(35,66,53,0.14); }
+.date-control .calendar-navigation { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; font-size: 0.875rem; font-weight: 500; }
+.date-control button { display: grid; place-items: center; min-width: 0; min-height: 32px; padding: 4px; border: 0; border-radius: var(--radius-control); background: transparent; color: var(--ink); font: inherit; font-size: 0.8125rem; cursor: pointer; }
+.date-control .calendar-navigation button { width: 32px; }
+.date-control button:not(:disabled):hover { background: var(--accent-soft); }
+.date-control button:disabled { opacity: 0.35; cursor: default; }
+.date-control .calendar-weekdays, .date-control .calendar-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; text-align: center; }
+.date-control .calendar-weekdays { margin-bottom: 4px; font-size: 0.75rem; }
+.date-control .calendar-days { font-variant-numeric: tabular-nums; }
+.date-control .calendar-days [aria-pressed="true"] { background: var(--accent); color: var(--surface); font-weight: 500; }
+.date-control .calendar-entry { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
+.date-control .calendar-entry label { display: block; margin-bottom: 4px; font-size: 0.75rem; }
+.date-control .calendar-entry input { width: 100%; min-width: 0; padding: 7px 8px; border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--surface); color: var(--ink); font: inherit; font-size: 0.875rem; font-variant-numeric: tabular-nums; }
+.date-control .calendar-entry input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .filter-card, .date-control .calendar-month svg { transition: none; } }
+
+.dashboard-filters[data-page] { --filter-height: 112px; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; gap: 12px; }
+.page-heading { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; gap: 16px; margin: 16px 0; }
+.page-heading h1 { margin: 0; font-size: clamp(26px, 2.5vw, 36px); font-weight: 500; letter-spacing: -0.035em; line-height: 1.3; }
+.page-heading .page-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-column: auto; justify-self: stretch; gap: 12px; }
+.page-heading .page-nav a { min-width: 0; height: 64px; padding: 12px; border-radius: var(--radius-card); font-size: 14px; line-height: 1.35; }
+.page-heading .page-nav svg { width: 20px; height: 20px; }
+@media (max-width: 600px) {
+  .state-control .state-selected { font-size: 18px; }
+  .state-control, .date-control summary { padding-inline: 10px; }
+  .date-control .calendar-panel { left: auto; right: -2px; }
+  .state-control .state-flag { width: 32px; right: 8px; }
+  .page-heading { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .page-heading .page-nav a { gap: 6px; padding: 8px; font-size: 12px; }
+}
+@media (pointer: coarse) {
+  .date-control button { min-height: 40px; }
+  .date-control .calendar-entry input { font-size: 1rem; }
+}

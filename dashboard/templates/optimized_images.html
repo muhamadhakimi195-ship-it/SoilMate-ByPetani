@@ -1,0 +1,20 @@
+{# The generated map contains only smaller, quality-checked alternatives. #}
+{% from "optimized_images_data.html" import optimized_images %}
+
+{% macro image_source(path) -%}
+{% if path in optimized_images %}
+<source type="image/avif" srcset="{{ url_for('static', path=optimized_images[path]) }}">
+{% endif %}
+{%- endmacro %}
+
+{% macro hero_source(hero) -%}
+{% set available = namespace(all=true) %}
+{% for variant in hero.variants %}
+  {% if ('state-hero/' ~ variant.file) not in optimized_images %}{% set available.all = false %}{% endif %}
+{% endfor %}
+{% if available.all %}
+<source type="image/avif"
+        srcset="{% for variant in hero.variants %}{{ url_for('static', path=optimized_images['state-hero/' ~ variant.file]) }} {{ variant.width }}w{% if not loop.last %}, {% endif %}{% endfor %}"
+        sizes="(max-width: 760px) 1000px, calc(100vw - 48px)">
+{% endif %}
+{%- endmacro %}

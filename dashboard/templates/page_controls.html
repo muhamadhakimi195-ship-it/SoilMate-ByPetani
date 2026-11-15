@@ -1,0 +1,7 @@
+<form id="dashboard-filters" class="dashboard-filters" method="get" data-page="{{ active_page }}">
+  {% if active_page == 'analysis' %}<input type="hidden" name="days" value="{{ days }}">{% endif %}
+  {% include "state_control.html" %}
+  {% include "date_control.html" %}
+
+  <noscript><button type="submit" class="filter-submit">Update view</button></noscript>
+</form>

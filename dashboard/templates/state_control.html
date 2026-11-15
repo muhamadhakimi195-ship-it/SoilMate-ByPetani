@@ -1,0 +1,12 @@
+{% set flag_names = {'Melaka': 'malacca', 'Pulau Pinang': 'penang'} %}
+<div class="state-control filter-card">
+  <img class="state-flag" src="{{ url_for('static', path='icons/flags/' ~ flag_names.get(selected_state, selected_state|lower|replace(' ', '-')) ~ '.png') }}?v=user-2" alt="Flag of {{ selected_state }}" width="40" height="40">
+  <label for="risk-state">State <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></label>
+  <select id="risk-state" name="state" form="dashboard-filters">
+    {% for state in risk_states %}
+    <option value="{{ state }}" data-flag="{{ url_for('static', path='icons/flags/' ~ flag_names.get(state, state|lower|replace(' ', '-')) ~ '.png') }}?v=user-2"{% if state == selected_state %} selected{% endif %}>{{ state }}</option>
+    {% endfor %}
+  </select>
+  <span class="state-selected" aria-hidden="true">{{ selected_state }}</span>
+  <span class="filter-caption">Malaysia</span>
+</div>

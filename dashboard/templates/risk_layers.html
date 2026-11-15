@@ -1,0 +1,28 @@
+{% set layer_icons = {
+  'Rainfall deficit': 'rain-icon.jpeg',
+  'Air dryness': 'humid-icon.jpeg',
+  'Soil moisture': 'soil-icon.jpeg',
+  'Plant stress': 'plant-icon.jpeg'
+} %}
+{% for layer in risk_layers %}
+<div class="risk-layer" data-risk-status="{{ layer.status }}" style="--risk-color: {{ layer.color }};">
+  <div class="risk-layer-heading">
+    <span class="risk-layer-label">
+      <img class="layer-icon risk-layer-icon" src="{{ url_for('static', path='icons/' ~ layer_icons[layer.title]) }}" alt="" width="24" height="24">
+      <span class="risk-layer-title">{{ layer.title }}</span>
+    </span>
+    <span class="risk-layer-status">{{ layer.status }}</span>
+  </div>
+  <div class="risk-layer-data">
+    <span class="risk-layer-value">{{ layer.value }}{% if layer.unit != '%' %} {% endif %}<span class="risk-layer-unit">{{ layer.unit }}</span></span>
+    <span class="risk-layer-percent">{{ '%g'|format(layer.percent) ~ '%' if layer.percent is not none else 'No bar data' }}</span>
+  </div>
+  {% if layer.percent is not none %}
+  <div class="risk-track" role="progressbar" aria-label="{{ layer.title }} bar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ layer.percent }}">
+    <div class="risk-fill" style="width: {{ layer.percent }}%;"></div>
+  </div>
+  {% else %}
+  <div class="risk-track" aria-hidden="true"></div>
+  {% endif %}
+</div>
+{% endfor %}

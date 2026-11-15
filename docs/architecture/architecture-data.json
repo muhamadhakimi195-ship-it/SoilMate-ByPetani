@@ -1,0 +1,527 @@
+{
+  "review_date": "2026-11-15",
+  "nodes": {
+    "sources": {
+      "title": "NASA data sources",
+      "status": "Planned",
+      "purpose": "Bring satellite and weather measurements into SoilMate. These product names appear in the supplied data, but the project does not yet download them.",
+      "inputs": [
+        "NASA POWER: weather and atmospheric fields",
+        "GPM IMERG: rainfall",
+        "SMAP L4: soil moisture",
+        "ECOSTRESS ESI: plant water stress"
+      ],
+      "outputs": [
+        "Future raw measurements for the data pipeline"
+      ],
+      "tools": [
+        "earthaccess",
+        "httpx"
+      ],
+      "files": [
+        "data/processed/data_processed.csv"
+      ],
+      "notes": "Product names are recorded in CSV freshness fields and project notes. Live integration, product versions and coverage are not verified. Keep credentials on the server; no credentials are included here."
+    },
+    "ingest": {
+      "title": "Import measurements",
+      "status": "Planned",
+      "purpose": "Fetch selected products and keep the original downloads. The script is currently empty.",
+      "inputs": [
+        "Selected location, time range and NASA products"
+      ],
+      "outputs": [
+        "Proposed raw files and source dates"
+      ],
+      "tools": [
+        "earthaccess",
+        "httpx",
+        "xarray",
+        "netCDF4",
+        "h5py"
+      ],
+      "files": [
+        "analytics/data_ingestion.py"
+      ],
+      "notes": "No scheduled job, downloader, raw-data folder or live refresh is implemented. HDF4 and other product-specific formats may require extra readers."
+    },
+    "clean": {
+      "title": "Prepare and check data",
+      "status": "Planned",
+      "purpose": "Proposed step: clean dates, match locations, join measurements, and prepare the files used by the app.",
+      "inputs": [
+        "Future raw weather and satellite data",
+        "Malaysia state boundaries"
+      ],
+      "outputs": [
+        "Proposed state/date tables",
+        "Checked metrics and map values"
+      ],
+      "tools": [
+        "pandas",
+        "numpy",
+        "geopandas",
+        "rasterio",
+        "rioxarray",
+        "xarray"
+      ],
+      "files": [
+        "analytics/data_cleaning.py"
+      ],
+      "notes": "The script is empty. No automated lineage from NASA products to the existing CSVs is demonstrated. Validate units, cloud gaps and risk rules before generating statuses."
+    },
+    "forecast": {
+      "title": "Forecast future risk",
+      "status": "Planned",
+      "purpose": "An optional future forecasting branch. It is separate from the current Simulation panel.",
+      "inputs": [
+        "Proposed cleaned time-series data"
+      ],
+      "outputs": [
+        "Future forecast values and evaluation results"
+      ],
+      "tools": [
+        "prophet",
+        "scikit-learn"
+      ],
+      "files": [
+        "analytics/forecasting_model.py",
+        "models/"
+      ],
+      "notes": "The forecasting script is empty and models/ has no model artifacts. No current route runs a model or returns predictions."
+    },
+    "snapshots": {
+      "title": "Weather and risk files",
+      "status": "Current",
+      "purpose": "Local CSV files supply the weather card, four risk cards and the soil scene.",
+      "inputs": [
+        "weather.csv: temperature, condition, humidity, rain, wind",
+        "LayerRisk.csv: supplied risk values, statuses and scene data"
+      ],
+      "outputs": [
+        "Rows matching the requested state and date"
+      ],
+      "tools": [
+        "pandas",
+        "pathlib"
+      ],
+      "files": [
+        "data/processed/weather.csv",
+        "data/processed/LayerRisk.csv"
+      ],
+      "notes": "These are supplied local datasets. The app reads reported statuses rather than computing new drought classifications. Current code does not prove their upstream NASA lineage."
+    },
+    "geodata": {
+      "title": "Map data and boundaries",
+      "status": "Current",
+      "purpose": "Combine state-level risk categories with Malaysia state shapes.",
+      "inputs": [
+        "maps_data.csv: alert, rain, humidity, soil and plant categories",
+        "malay.geojson: state boundaries"
+      ],
+      "outputs": [
+        "Map categories joined to state shapes for a selected date"
+      ],
+      "tools": [
+        "pandas",
+        "json",
+        "pathlib"
+      ],
+      "files": [
+        "data/processed/maps_data.csv",
+        "data/Geo/malay.geojson"
+      ],
+      "notes": "The map uses the selected date and shows all states. State names are normalised, including Melaka/Malacca and Pulau Pinang/Penang."
+    },
+    "history": {
+      "title": "Daily history files",
+      "status": "Current",
+      "purpose": "Four CSVs hold summary rows and daily chart observations.",
+      "inputs": [
+        "rainfall_graph.csv",
+        "humidity_graph.csv",
+        "soil_moisture_graph.csv",
+        "plant_stress_graph.csv"
+      ],
+      "outputs": [
+        "Selected-date summary",
+        "Daily history for the chart window"
+      ],
+      "tools": [
+        "pandas"
+      ],
+      "files": [
+        "data/processed/rainfall_graph.csv",
+        "data/processed/humidity_graph.csv",
+        "data/processed/soil_moisture_graph.csv",
+        "data/processed/plant_stress_graph.csv"
+      ],
+      "notes": "The reader handles the extra header row and row offsets in these files. Missing days stay as gaps; values and reported statuses are preserved."
+    },
+    "server": {
+      "title": "FastAPI and page rendering",
+      "status": "Current",
+      "purpose": "Receive browser requests, read matching data and render pages or HTML fragments using Jinja templates.",
+      "inputs": [
+        "State and date query values",
+        "Optional weeks value for the soil scene",
+        "Local weather and risk CSV rows"
+      ],
+      "outputs": [
+        "GET /: Overview page",
+        "GET /risk-layers: risk cards",
+        "GET /weather: weather card",
+        "GET /simulation: historical soil scene"
+      ],
+      "tools": [
+        "FastAPI",
+        "Jinja2",
+        "pandas",
+        "GZipMiddleware",
+        "StaticFiles"
+      ],
+      "files": [
+        "backend/main.py",
+        "dashboard/templates/"
+      ],
+      "notes": "The app is a server-rendered FastAPI application. Uvicorn is the declared ASGI runner. /simulation moves backwards from the chosen date; it is not a future forecast."
+    },
+    "mapengine": {
+      "title": "Build interactive maps",
+      "status": "Current",
+      "purpose": "Folium builds a Leaflet map for the selected date and colours the state shapes using supplied categories.",
+      "inputs": [
+        "maps_data.csv",
+        "malay.geojson",
+        "Date query value"
+      ],
+      "outputs": [
+        "GET /maps/alert",
+        "GET /maps/rain",
+        "GET /maps/humid",
+        "GET /maps/soil",
+        "GET /maps/plants"
+      ],
+      "tools": [
+        "Folium",
+        "pandas",
+        "Leaflet"
+      ],
+      "files": [
+        "backend/alert_map.py",
+        "backend/rain_map.py",
+        "backend/humid_map.py",
+        "backend/soil_map.py",
+        "backend/plants_map.py"
+      ],
+      "notes": "The routes generate map HTML on request. The HTML files in dashboard/maps/ are standalone saved map outputs, not the live route data source. Folium defaults can load map tiles and browser assets from external providers."
+    },
+    "analysis": {
+      "title": "Prepare chart data",
+      "status": "Current",
+      "purpose": "Read the four history files, match the state and date, and build Plotly chart specifications.",
+      "inputs": [
+        "State and date query values",
+        "Chart window: 14, 30 or 90 days",
+        "Four daily history files"
+      ],
+      "outputs": [
+        "GET /analysis: summaries, chart JSON and daily-data tables"
+      ],
+      "tools": [
+        "pandas",
+        "Plotly Python",
+        "functools.lru_cache",
+        "json"
+      ],
+      "files": [
+        "backend/analysis.py"
+      ],
+      "notes": "The in-memory cache refreshes when a source file changes. Rain summary totals always cover 14 days, even when the plot shows 30 or 90 days. ESI scale and status cutoffs still need domain review."
+    },
+    "overview": {
+      "title": "Overview dashboard",
+      "status": "Current",
+      "purpose": "Help a grower see the chosen state and date at a glance.",
+      "inputs": [
+        "Rendered page and weather/risk/scene fragments"
+      ],
+      "outputs": [
+        "Weather card",
+        "Four risk cards: rain, air, soil, plants",
+        "Historical soil scene and captions"
+      ],
+      "tools": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Bootstrap",
+        "Fetch API"
+      ],
+      "files": [
+        "dashboard/templates/index.html",
+        "dashboard/templates/weather_card.html",
+        "dashboard/templates/risk_layers.html",
+        "dashboard/templates/simulation.html",
+        "dashboard/static/dashboard.js"
+      ],
+      "notes": "Simulation shows a soil image band from stored soil values. Week controls select earlier dates. The motion button only changes the visual animation."
+    },
+    "mapui": {
+      "title": "Five map layers",
+      "status": "Current",
+      "purpose": "Explore Malaysia by switching between five state-coloured maps.",
+      "inputs": [
+        "Folium-generated map HTML in an iframe",
+        "Selected date and layer"
+      ],
+      "outputs": [
+        "Alert, rain, air dryness, soil and plant views",
+        "Pan, zoom and click-to-zoom on state shapes"
+      ],
+      "tools": [
+        "Leaflet",
+        "Folium HTML",
+        "JavaScript",
+        "Browser iframe"
+      ],
+      "files": [
+        "dashboard/templates/index.html",
+        "dashboard/static/dashboard.js"
+      ],
+      "notes": "Changing the date or layer reloads the iframe. Selecting a state changes the weather, risk and scene cards; it does not currently filter the map to that one state. The source column named Humidity is displayed as the air-dryness map layer."
+    },
+    "charts": {
+      "title": "Monitoring and Analysis",
+      "status": "Current",
+      "purpose": "Show trends and the underlying observations in simple charts.",
+      "inputs": [
+        "Plotly chart JSON and summary values from /analysis"
+      ],
+      "outputs": [
+        "Rainfall balance, dry-air pressure, root-zone moisture and plant response",
+        "14 / 30 / 90-day windows",
+        "Chart view switches, zoom reset and daily-data dialogs"
+      ],
+      "tools": [
+        "Plotly.js Basic (local)",
+        "JavaScript",
+        "HTML dialog",
+        "CSS"
+      ],
+      "files": [
+        "dashboard/templates/analysis.html",
+        "dashboard/static/analysis.js",
+        "dashboard/static/analysis.css",
+        "dashboard/static/vendor/plotly-basic-4.3.0.min.js"
+      ],
+      "notes": "Desktop supports drag-to-zoom. Touch devices keep page scrolling and tap tooltips. Charts preserve missing observations and show a note about ESI interpretation."
+    },
+    "browser": {
+      "title": "Grower in a web browser",
+      "status": "Current",
+      "purpose": "Choose a Malaysian state and a date, then open Overview or Monitoring and Analysis.",
+      "inputs": [
+        "State, date, chart period and map-layer choices"
+      ],
+      "outputs": [
+        "HTTP requests to FastAPI",
+        "Visible cards, maps, charts and daily-data tables"
+      ],
+      "tools": [
+        "Web browser",
+        "JavaScript",
+        "Fetch API",
+        "CSS"
+      ],
+      "files": [
+        "dashboard/templates/page_controls.html",
+        "dashboard/static/controls.js",
+        "dashboard/templates/base.html"
+      ],
+      "notes": "Pages share state/date controls. Overview updates fragments with fetch; Analysis uses page requests. No login, database, production hosting setup or background scheduler is demonstrated in the inspected source."
+    }
+  },
+  "tools": [
+    [
+      "FastAPI",
+      "Current",
+      "Python web application and routes"
+    ],
+    [
+      "Jinja2",
+      "Current",
+      "Server-side page and fragment templates"
+    ],
+    [
+      "pandas",
+      "Current",
+      "Read CSVs, filter rows and prepare daily series"
+    ],
+    [
+      "plotly",
+      "Current",
+      "Python chart specifications"
+    ],
+    [
+      "folium",
+      "Current",
+      "Build map HTML from state boundaries"
+    ],
+    [
+      "Plotly.js Basic",
+      "Current",
+      "Local browser charts; the checked-in filename is plotly-basic-4.3.0.min.js"
+    ],
+    [
+      "Leaflet",
+      "Current",
+      "Browser map engine generated by Folium"
+    ],
+    [
+      "HTML / CSS / JavaScript",
+      "Current",
+      "Dashboard pages, layout, controls and interactions"
+    ],
+    [
+      "Bootstrap",
+      "Current",
+      "CSS loaded by the base template; generated map HTML also includes Bootstrap assets"
+    ],
+    [
+      "Google Fonts / Inter",
+      "Current",
+      "Font stylesheet loaded by the base template"
+    ],
+    [
+      "Fetch API / iframe",
+      "Current",
+      "Refresh Overview sections and display map HTML"
+    ],
+    [
+      "GZipMiddleware / StaticFiles",
+      "Current",
+      "Compress responses and serve local assets"
+    ],
+    [
+      "functools.lru_cache",
+      "Current",
+      "Keep parsed Analysis files in memory until file modification times change"
+    ],
+    [
+      "unittest",
+      "Current",
+      "Backend Analysis tests in tests/test_analysis.py"
+    ],
+    [
+      "Playwright / Chrome",
+      "Current",
+      "Existing browser QA script in output/qa/check_analysis_ui.py"
+    ],
+    [
+      "uvicorn[standard]",
+      "Declared",
+      "ASGI server to run FastAPI; no production service configuration is provided"
+    ],
+    [
+      "pydantic",
+      "Declared",
+      "FastAPI validation dependency; no custom application data models found"
+    ],
+    [
+      "pydantic-settings",
+      "Planned",
+      "Environment configuration; no application use found"
+    ],
+    [
+      "earthaccess",
+      "Planned",
+      "Access NASA Earthdata products"
+    ],
+    [
+      "httpx",
+      "Planned",
+      "Call remote data APIs"
+    ],
+    [
+      "geopandas",
+      "Planned",
+      "Prepare and join geographic data"
+    ],
+    [
+      "rasterio",
+      "Planned",
+      "Read and process raster grids"
+    ],
+    [
+      "rioxarray",
+      "Planned",
+      "Geospatial raster operations with xarray"
+    ],
+    [
+      "numpy",
+      "Planned",
+      "Numerical calculations in the future pipeline"
+    ],
+    [
+      "xarray",
+      "Planned",
+      "Work with multidimensional satellite and weather data"
+    ],
+    [
+      "netCDF4",
+      "Planned",
+      "Read NetCDF products"
+    ],
+    [
+      "h5py",
+      "Planned",
+      "Read HDF5 products"
+    ],
+    [
+      "prophet",
+      "Planned",
+      "Time-series forecasting"
+    ],
+    [
+      "scikit-learn",
+      "Planned",
+      "Model evaluation and other future ML utilities"
+    ],
+    [
+      "pyarrow",
+      "Planned",
+      "Parquet storage support"
+    ],
+    [
+      "streamlit",
+      "Alternative",
+      "Starter manifest option; the current dashboard uses FastAPI and Jinja"
+    ],
+    [
+      "streamlit-folium",
+      "Alternative",
+      "Only needed if a Streamlit dashboard is adopted"
+    ],
+    [
+      "pydeck",
+      "Alternative",
+      "Alternative map rendering; no current use found"
+    ],
+    [
+      "SQLite / sqlite3",
+      "Optional",
+      "Mentioned in the starter manifest; no current database use found"
+    ],
+    [
+      "dask[array]",
+      "Optional",
+      "Commented-out dependency for lazy or chunked xarray processing"
+    ],
+    [
+      "jQuery / Awesome Markers / Font Awesome",
+      "Generated assets",
+      "Included in saved Folium map HTML; not the main dashboard framework"
+    ]
+  ]
+}

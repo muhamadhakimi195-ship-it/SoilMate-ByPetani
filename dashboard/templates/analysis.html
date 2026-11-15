@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='analysis.css') }}?v=15">
+{% endblock %}
+{% block page_title %}
+{% set periods = [14, 30, 90] %}
+<nav class="analysis-periods segmented-switch" aria-label="Chart period" style="--segments: 3; --selected: {{ periods.index(days) if days in periods else 0 }};">
+  {% for period in periods %}
+  <a href="?state={{ selected_state|urlencode }}&amp;date={{ selected_date }}&amp;days={{ period }}"{% if days == period %} aria-current="true"{% endif %}><span class="period-value">{{ period }}</span><span>days</span></a>
+  {% endfor %}
+  <div class="slider" aria-hidden="true"{% if days not in periods %} hidden{% endif %}></div>
+</nav>
+{% endblock %}
+{% block content %}
+{% set card_icons = {
+  'rain': 'rain-icon.jpeg',
+  'air': 'humid-icon.jpeg',
+  'soil': 'soil-icon.jpeg',
+  'plant': 'plant-icon.jpeg'
+} %}
+<div class="analysis-page">
+  <div class="analysis-board">
+    {% for card in cards %}
+    <section class="analysis-card" id="analysis-{{ card.id }}" tabindex="-1" data-analysis-card style="--status-color: {{ card.status_color }};" aria-labelledby="heading-{{ card.id }}">
+      <header class="analysis-card-header">
+        <div class="analysis-card-title">
+          <img class="layer-icon analysis-icon" src="{{ url_for('static', path='icons/' ~ card_icons[card.id]) }}" alt="" width="24" height="24">
+          <div><h2 id="heading-{{ card.id }}">{{ card.title }}</h2></div>
+        </div>
+        <span class="analysis-status" aria-label="Reported status: {{ card.status }}">{{ card.status }}</span>
+      </header>
+
+      <div class="analysis-reading">
+        <div>
+          <span class="analysis-label">{{ card.primary_label }}</span>
+          <div class="analysis-primary">{{ card.primary }} <small>{{ card.unit }}</small></div>
+        </div>
+        <div class="analysis-comparison">{% if card.comparison %}<span>{{ card.comparison }}</span>{% endif %}<span>{{ card.insight }}</span></div>
+        {% if card.bullet %}
+        <div class="analysis-bullet" role="img" aria-label="{{ card.primary }} mm received; {{ card.comparison }}">
+          <span class="analysis-bullet-fill" style="width: {{ card.bullet.actual }}%;"></span>
+          <span class="analysis-bullet-target" style="left: {{ card.bullet.target }}%;"></span>
+        </div>
+        {% endif %}
+      </div>
+
+      {% if card.available %}
+      <div class="analysis-chart-tools">
+        {% if card.views|length > 1 %}
+        <div class="analysis-view-buttons" role="group" aria-label="{{ card.title }} chart view">
+          {% for view in card.views %}
+          <button type="button" data-view="{{ loop.index0 }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ view.label }}</button>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <button class="analysis-reset" type="button" data-reset aria-label="Reset {{ card.title }} zoom">Reset zoom</button>
+      </div>
+      <div class="analysis-graph" role="img" aria-busy="true" aria-label="{{ card.title }} chart for {{ selected_state }}. Values are also available under View daily data."></div>
+      {% for view in card.views %}
+      <div class="analysis-legend" data-legend="{{ loop.index0 }}"{% if not loop.first %} hidden{% endif %}>
+        {% for item in view.legend %}<span><i class="analysis-key key-{{ item.kind }}" style="--series-color: {{ item.color }};" aria-hidden="true"></i>{{ item.label }}</span>{% endfor %}
+      </div>
+      {% endfor %}
+      <script type="application/json" class="analysis-spec">{{ card.views|tojson }}</script>
+      {% else %}
+      <div class="analysis-no-data" role="status">No observations in this period.</div>
+      {% endif %}
+
+      <dl class="analysis-stats">
+        {% for stat in card.stats %}<div><dt>{{ stat.label }}</dt><dd>{{ stat.value }} <small>{{ stat.unit }}</small></dd></div>{% endfor %}
+      </dl>
+      <div class="analysis-card-bottom">
+        <span>{{ card.available }} / {{ days }} days plotted</span>
+        {% if card.warning %}<a class="analysis-warning" href="#analysis-data-notes">{{ card.warning }}</a>{% endif %}
+      </div>
+      <button class="analysis-data-button" type="button" data-open-data>View daily data <span aria-hidden="true">→</span></button>
+      <dialog class="analysis-dialog" aria-labelledby="data-title-{{ card.id }}">
+        <div class="analysis-dialog-header">
+          <div><h2 id="data-title-{{ card.id }}">{{ card.title }}</h2><p>{{ selected_state }} · {{ period_start }} – {{ period_end }}</p></div>
+          <form method="dialog"><button type="submit">Close</button></form>
+        </div>
+        <p class="analysis-source">{{ card.source }}</p>
+        <dl class="analysis-source-values">{% for item in card.metadata %}<div><dt>{{ item.label }}</dt><dd>{{ item.value }}</dd></div>{% endfor %}</dl>
+        <div class="analysis-table-scroll">
+          <table><thead><tr><th scope="col">Date</th>{% for column in card.daily_columns %}<th scope="col">{{ column }}</th>{% endfor %}</tr></thead>
+            <tbody>{% for row in card.daily_rows %}<tr><th scope="row">{{ row.date }}</th>{% for value in row['values'] %}<td>{{ value }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+          </table>
+        </div>
+      </dialog>
+    </section>
+    {% endfor %}
+  </div>
+
+  <details class="analysis-data-notes" id="analysis-data-notes">
+    <summary>How to read these charts</summary>
+    <ul>
+      <li>The rain gap compares observed rain with the usual daily rain supplied in the file. The summary above it always describes the last 14 days.</li>
+      <li>Air bars above zero exceed the supplied dry-air line. Below zero means below that line, rather than zero dryness.</li>
+      <li>Soil percentile compares wetness with past conditions. It is not a percentage of water in the soil. The 20/40 reference lines come from the soil file.</li>
+      <li>ESI is shown exactly as supplied. This file contains values above the 0–1 range described by the <a href="https://lpdaac.usgs.gov/documents/342/ECO4ESIPTJPL_ATBD_V1.pdf" target="_blank" rel="noopener">ECOSTRESS guide</a>, and some reported statuses disagree with the proposed 0.7/0.4 cutoffs. Those cutoffs are not used here until the ESI scale is confirmed.</li>
+    </ul>
+  </details>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', path='vendor/plotly-basic-4.3.0.min.js') }}" defer></script>
+<script src="{{ url_for('static', path='analysis.js') }}?v=7" defer></script>
+{% endblock %}

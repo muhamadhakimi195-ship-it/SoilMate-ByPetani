@@ -1,0 +1,54 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+.netrc
+_netrc
+/Nasa-Api-Key.txt
+*.pem
+*.key
+/.aws/
+
+# Python environments, caches and build products
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Local editor/agent state, previews, backups and logs
+/.agents/
+/.codex/
+/.idea/
+/.vscode/
+/output/
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local source uploads; runtime images are in dashboard/static.
+/uploads/
+# Duplicated PNG masters; committed manifest uses WebP/AVIF.
+/dashboard/static/state-hero/*.png
+# Generated standalone exports; routes generate maps dynamically.
+/dashboard/maps/*.html
+/docs/architecture/*-source.zip
+
+# Intermediate data not read by the dashboard.
+# The eight runtime CSVs and Malaysia GeoJSON remain included.
+/data/processed/data_petani.csv
+/data/processed/data_processed.csv
+/data/raw/
+/data/interim/

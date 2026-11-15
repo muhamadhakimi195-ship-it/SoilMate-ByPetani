@@ -1,0 +1,23 @@
+<p class="simulation-date">{{ selected_state }} · {{ simulation_date }}</p>
+{% if simulation %}
+<div class="simulation-body">
+  <figure class="simulation-figure">
+    <div class="simulation-visual" data-scene="{{ simulation.scene }}">
+      <img class="simulation-scene" src="{{ url_for('static', path='simulation/' ~ simulation.image) }}"
+           alt="{{ simulation.image_label }} — AI-generated illustration" width="768" height="512" decoding="async">
+      <div class="simulation-root-effects" aria-hidden="true"><span></span><span></span><span></span></div>
+    </div>
+    <figcaption class="simulation-caption">{{ simulation.image_label }} · Illustrative soil view</figcaption>
+  </figure>
+  {% for layer in simulation.layers %}
+  <div class="simulation-layer" data-risk-status="{{ layer.status }}" style="--simulation-color: {{ layer.color }};">
+    <span class="simulation-title">{{ layer.title }}</span>
+    <span class="simulation-value">{{ layer.value }}{% if layer.unit != '%' %} {% endif %}<small>{{ layer.unit }}</small></span>
+    <span class="simulation-status">{{ layer.status }}</span>
+    <p>{{ layer.say }}</p>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="simulation-empty" role="status">No simulation data for this date and state.</p>
+{% endif %}

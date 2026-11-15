@@ -1,0 +1,50 @@
+{% from "optimized_images.html" import image_source with context %}
+{% set weather_photos = {
+  'Partly cloudy': ('partly-cloudy.jpg', 'Sky_with_clouds_and_sun.jpg', 'HampusWennberg', 'CC0'),
+  'Showers': ('showers.jpg', 'Rain_shower_after_cold_front_3.JPG', 'Merikanto', 'CC BY-SA 3.0'),
+  'Light rain': ('light-rain.jpg', 'Light_rain_on_a_roof.jpg', 'W.carter', 'CC0'),
+  'Sunny and hot': ('sunny-hot.jpg', 'Sun_in_the_sky.jpg', 'Carla Nunziata', 'CC BY-SA 3.0')
+} %}
+{% if weather %}
+{% set photo = weather_photos.get(weather['Condition']) %}
+<div class="weather-image">
+  {% if photo %}
+  <picture>
+  {{ image_source('weather/' ~ photo[0]) }}
+  <img src="{{ url_for('static', path='weather/' ~ photo[0]) }}" alt="{{ weather['Condition'] }} — illustrative photograph">
+  </picture>
+  {% endif %}
+  <div class="weather-summary">
+    <div>
+      <span class="weather-condition">{{ weather['Condition'] }}</span>
+    </div>
+    <div class="weather-temperature">
+      <span class="weather-heading">Max temperature</span>
+      <span>{{ '%g'|format(weather['TempMax']) }}<small>°C</small></span>
+    </div>
+  </div>
+  {% if photo %}
+  <div class="weather-credit">
+    <a href="https://commons.wikimedia.org/wiki/File:{{ photo[1] }}" target="_blank" rel="noopener">Photo: {{ photo[2] }}</a>
+    · <a href="{{ 'https://creativecommons.org/publicdomain/zero/1.0/' if photo[3] == 'CC0' else 'https://creativecommons.org/licenses/by-sa/3.0/' }}" target="_blank" rel="noopener">{{ photo[3] }}</a>
+  </div>
+  {% endif %}
+</div>
+<div class="weather-text">
+  <div class="weather-location">
+    <span>{{ weather['States'] }}</span>
+    <time datetime="{{ selected_date }}">{{ weather['Date'] }}</time>
+  </div>
+  <dl class="weather-metrics">
+    <div><dt>Humidity</dt><dd>{{ '%g'|format(weather['Humidity (%)']) }}<small>%</small></dd></div>
+    <div><dt>Rain</dt><dd>{{ '%g'|format(weather['Rain (mm)']) }} <small>mm</small></dd></div>
+    <div><dt>Wind</dt><dd>{{ '%g'|format(weather['Wind (km/h)']) }} <small>km/h</small></dd></div>
+  </dl>
+</div>
+{% else %}
+<div class="weather-message" role="status">
+  <span class="weather-condition">Weather condition</span>
+  <p>{{ selected_state }} · {{ selected_date }}</p>
+  <p>No weather data for this date and state.</p>
+</div>
+{% endif %}
