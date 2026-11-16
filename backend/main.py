@@ -37,6 +37,12 @@ def get_state_hero(slug):
 
 templates.env.globals["get_state_hero"] = get_state_hero
 
+
+@app.get("/health", include_in_schema=False)
+def health():
+    return {"status": "ok"}
+
+
 layer_csv = Project_Root / "data" / "processed" / "LayerRisk.csv"
 weather_csv = Project_Root / "data" / "processed" / "weather.csv"
 header_csv = Project_Root / "data" / "processed" / "header.csv"

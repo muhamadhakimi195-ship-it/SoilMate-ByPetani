@@ -7,6 +7,9 @@
 *.md text eol=lf
 *.txt text eol=lf
 *.ps1 text eol=crlf
+Dockerfile text eol=lf
+Caddyfile text eol=lf
+*.yaml text eol=lf
 # Preserve supplied CSV bytes and line endings.
 *.csv -text
 *.png binary

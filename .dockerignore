@@ -1,0 +1,22 @@
+# Only runtime inputs enter the build context, even from a developer's checkout.
+**
+!requirements.txt
+!backend/
+!backend/**
+!dashboard/
+!dashboard/**
+!data/
+!data/Geo/
+!data/Geo/malay.geojson
+!data/processed/
+!data/processed/LayerRisk.csv
+!data/processed/header.csv
+!data/processed/weather.csv
+!data/processed/maps_data.csv
+!data/processed/rainfall_graph.csv
+!data/processed/humidity_graph.csv
+!data/processed/soil_moisture_graph.csv
+!data/processed/plant_stress_graph.csv
+**/__pycache__/
+**/*.py[cod]
+dashboard/static/state-hero/*.png
